@@ -1,1 +1,1 @@
-# student-management-backend-boilerplate
+# Student Management API
