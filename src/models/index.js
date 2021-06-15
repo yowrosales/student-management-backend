@@ -4,17 +4,22 @@ const { Sequelize, DataTypes } = require("sequelize");
 
 const filebasename = path.basename(__filename);
 const env = process.env.NODE_ENV || "development";
-
 const config = require(`${__dirname}/../config/config.js`)[env];
 
 const db = {};
 
 let sequelize;
-sequelize = new Sequelize(config.database, config.username, config.password, { ...config, logging: false });
+sequelize = new Sequelize(config.database, config.username, config.password, {
+  ...config,
+  logging: false,
+});
 
 fs.readdirSync(__dirname)
   .filter((file) => {
-    const returnFile = file.indexOf(".") !== 0 && file !== filebasename && file.slice(-3) === ".js";
+    const returnFile =
+      file.indexOf(".") !== 0 &&
+      file !== filebasename &&
+      file.slice(-3) === ".js";
     return returnFile;
   })
   .forEach((file) => {

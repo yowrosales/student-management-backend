@@ -6,13 +6,15 @@ const faker = require("faker");
 
 const { truncate } = require("../testHelper");
 
-const { fake } = require("faker");
+const student = require("../models/student");
 
 describe("Api Controller", () => {
   describe("Register API", () => {
     describe("Invalid body", () => {
       it("should fail without tutor ", async (done) => {
-        const { statusCode, body } = await request(app).post("/api/register").send();
+        const { statusCode, body } = await request(app)
+          .post("/api/register")
+          .send();
         const { message, details } = body;
 
         expect(message).toEqual("Validation Failed");
@@ -22,28 +24,95 @@ describe("Api Controller", () => {
       });
 
       it("should fail without students ", async (done) => {
+        const { statusCode, body } = await request(app)
+          .post("/api/register")
+          .send({ tutor: "testTutor@tutor.com" });
+        const { message, details } = body;
+
+        expect(message).toEqual("Validation Failed");
+        expect(details).toEqual([{ students: '"students" is required' }]);
+        expect(statusCode).toEqual(400);
         done();
       });
 
       it("should fail if tutor is not an email", async (done) => {
+        const { statusCode, body } = await request(app)
+          .post("/api/register")
+          .send({
+            tutor: "tutorinvalid@.com",
+            students: ["student1@student.com"],
+          });
+        const { message, details } = body;
+
+        expect(message).toEqual("Validation Failed");
+        expect(details).toEqual([{ tutor: '"tutor" must be a valid email' }]);
+        expect(statusCode).toEqual(400);
         done();
       });
 
-      it("should fail if students are not in email format", async (done) => {
+      it("should fail if students[0] are not in email format", async (done) => {
+        const { statusCode, body } = await request(app)
+          .post("/api/register")
+          .send({
+            tutor: "tutorinvalid@tutor.com",
+            students: ["student1@.com", "student2@tutor.com"],
+          });
+        const { message, details } = body;
+
+        expect(message).toEqual("Validation Failed");
+        expect(details).toEqual([{ 0: '"students[0]" must be a valid email' }]);
+        expect(statusCode).toEqual(400);
+        done();
+      });
+
+      it("should fail if students[1] are not in email format", async (done) => {
+        const { statusCode, body } = await request(app)
+          .post("/api/register")
+          .send({
+            tutor: "tutorinvalid@tutor.com",
+            students: ["student1@tutor.com", "student2"],
+          });
+        const { message, details } = body;
+
+        expect(message).toEqual("Validation Failed");
+        expect(details).toEqual([{ 1: '"students[1]" must be a valid email' }]);
+        expect(statusCode).toEqual(400);
         done();
       });
     });
 
     describe("Valid body", () => {
+      const emailTutor = faker.internet.email();
+      const emailStudents = [faker.internet.email(), faker.internet.email()];
+
       it("should pass for new tutor and students", async (done) => {
+        const { statusCode } = await request(app).post("/api/register").send({
+          tutor: emailTutor,
+          students: emailStudents,
+        });
+
+        expect(statusCode).toEqual(204);
         done();
       });
 
       it("should pass for existing tutor and new students", async (done) => {
+        const newStudents = [faker.internet.email(), faker.internet.email()];
+        const { statusCode } = await request(app).post("/api/register").send({
+          tutor: emailTutor,
+          students: newStudents,
+        });
+
+        expect(statusCode).toEqual(204);
         done();
       });
 
       it("should pass for new tutor and old students", async (done) => {
+        const { statusCode } = await request(app).post("/api/register").send({
+          tutor: emailTutor,
+          students: emailStudents,
+        });
+
+        expect(statusCode).toEqual(204);
         done();
       });
     });

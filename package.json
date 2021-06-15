@@ -7,7 +7,7 @@
     "dev": "nodemon -r dotenv/config src/server.js dotenv_config_path=./.env",
     "db:create": "npx sequelize-cli db:create",
     "db:migrate": "npx sequelize-cli db:migrate",
-    "test": "jest --testTimeout=30000  --watchAll --runInBand ",
+    "test": "NODE_OPTIONS=--unhandled-rejections=warn jest --testTimeout=30000  --watchAll --runInBand ",
     "pretest": "cross-env NODE_ENV=test npm run db:reset:test",
     "db:create:test": "cross-env NODE_ENV=test npx sequelize-cli db:create",
     "db:reset:test": "cross-env NODE_ENV=test npx sequelize-cli db:drop && cross-env NODE_ENV=test npx sequelize-cli db:create && cross-env NODE_ENV=test npx sequelize-cli db:migrate"
@@ -19,8 +19,8 @@
     ]
   },
   "repository": {
-    "type": "git",
-    "url": "git+https://github.com/jimbocortes/student-management-backend.git"
+    "type": "module",
+    "url": "git+https://github.com/yowrosales/student-management.git"
   },
   "author": "",
   "license": "ISC",
