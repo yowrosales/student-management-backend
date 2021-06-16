@@ -181,13 +181,35 @@ describe("Api Controller", () => {
 
   describe("SuspendStudent API", () => {
     describe("Invalid body", () => {
+      it("should fail if no student provided", async (done) => {
+        const { statusCode, body } = await request(app)
+          .post("/api/suspend")
+          .send();
+        const { message, details } = body;
+        expect(message).toEqual("Validation Failed");
+        expect(details).toEqual([{ student: '"student" is required' }]);
+        expect(statusCode).toEqual(400);
+        done();
+      });
+
       it("should fail for nonexistent student", async (done) => {
+        const { statusCode, body } = await request(app)
+          .post("/api/suspend")
+          .send({ student: "nonexistentstudent@tutor.com" });
+        const { message, details } = body;
+        expect(message).toEqual("Validation Failed");
+        expect(details).toEqual([{ student: '"student" does not exist' }]);
+        expect(statusCode).toEqual(400);
         done();
       });
     });
 
     describe("Valid body", () => {
       it("should pass for existing student", async (done) => {
+        const { statusCode, body } = await request(app)
+          .post("/api/suspend")
+          .send({ student: studentA });
+        expect(statusCode).toEqual(204);
         done();
       });
     });

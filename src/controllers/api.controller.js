@@ -1,19 +1,14 @@
 import { successResponse, errorResponse } from "../helpers";
 import RegisterStudents from "../services/RegisterStudents";
 import GetCommonStudentsList from "../services/GetCommonStudentsList";
+import SuspendStudent from "../services/SuspendStudent";
 import _ from "lodash";
 
 export const register = async (req, res) => {
   try {
     const service = new RegisterStudents(req.body);
-    const tutor = await service.call();
 
-    return successResponse(
-      req,
-      res,
-      { data: tutor.dataValues, message: "tutor created succesfully" },
-      204
-    );
+    return successResponse(req, res, await service.call(), 204);
   } catch (error) {
     return errorResponse(req, res, error.message);
   }
@@ -30,5 +25,23 @@ export const commonstudentslist = async (req, res) => {
     return successResponse(req, res, { students: filterEdList }, 200);
   } catch (error) {
     return errorResponse(req, res, error.message);
+  }
+};
+
+export const suspendStudent = async (req, res) => {
+  try {
+    const service = new SuspendStudent(req.body, errorResponse);
+
+    return successResponse(req, res, await service.call(), 204);
+  } catch (error) {
+    return errorResponse(
+      req,
+      res,
+      error.name,
+      error.message,
+      error.statusCode,
+      error.error,
+      error.details
+    );
   }
 };

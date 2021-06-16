@@ -13,8 +13,8 @@ module.exports = {
         unique: true,
         type: Sequelize.STRING,
       },
-      isActive: {
-        default: true,
+      suspended: {
+        default: false,
         type: Sequelize.BOOLEAN,
       },
       createdAt: {

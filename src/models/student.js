@@ -23,7 +23,8 @@ module.exports = (sequelize, DataTypes) => {
           isEmail: true,
         },
       },
-      isActive: {
+      suspended: {
+        defaultValue: false,
         type: DataTypes.BOOLEAN,
       },
     },

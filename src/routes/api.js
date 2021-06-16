@@ -21,4 +21,11 @@ router.get(
   apiController.commonstudentslist
 );
 
+// api/suspend
+router.post(
+  "/suspend",
+  validate(apiValidator.suspend, { keyByField: true }),
+  apiController.suspendStudent
+);
+
 module.exports = router;
