@@ -9,12 +9,6 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE,
       },
-      id: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: Sequelize.INTEGER,
-      },
       tutorId: {
         type: Sequelize.UUID,
         primaryKey: false,
