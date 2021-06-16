@@ -7,6 +7,12 @@ const faker = require("faker");
 const { truncate } = require("../testHelper");
 
 const student = require("../models/student");
+const tutorA = faker.internet.email();
+const tutorB = faker.internet.email();
+
+const studentA = faker.internet.email();
+const studentB = faker.internet.email();
+const studentC = faker.internet.email();
 
 describe("Api Controller", () => {
   describe("Register API", () => {
@@ -86,31 +92,36 @@ describe("Api Controller", () => {
       const emailStudents = [faker.internet.email(), faker.internet.email()];
 
       it("should pass for new tutor and students", async (done) => {
-        const { statusCode } = await request(app).post("/api/register").send({
-          tutor: emailTutor,
-          students: emailStudents,
-        });
+        const { statusCode } = await request(app)
+          .post("/api/register")
+          .send({
+            tutor: tutorA,
+            students: [studentA, studentB],
+          });
 
         expect(statusCode).toEqual(204);
         done();
       });
 
       it("should pass for existing tutor and new students", async (done) => {
-        const newStudents = [faker.internet.email(), faker.internet.email()];
-        const { statusCode } = await request(app).post("/api/register").send({
-          tutor: emailTutor,
-          students: newStudents,
-        });
+        const { statusCode } = await request(app)
+          .post("/api/register")
+          .send({
+            tutor: tutorA,
+            students: [studentC],
+          });
 
         expect(statusCode).toEqual(204);
         done();
       });
 
       it("should pass for new tutor and old students", async (done) => {
-        const { statusCode } = await request(app).post("/api/register").send({
-          tutor: emailTutor,
-          students: emailStudents,
-        });
+        const { statusCode } = await request(app)
+          .post("/api/register")
+          .send({
+            tutor: tutorB,
+            students: [studentA, studentB],
+          });
 
         expect(statusCode).toEqual(204);
         done();
@@ -121,20 +132,48 @@ describe("Api Controller", () => {
   describe("GetCommonStudents API", () => {
     describe("Invalid query", () => {
       it("should fail without tutor ", async (done) => {
+        const { statusCode, body } = await request(app)
+          .get("/api/commonstudents")
+          .send();
+        const { message, details } = body;
+        expect(message).toEqual("Validation Failed");
+        expect(details).toEqual([{ tutor: '"tutor" is required' }]);
+        expect(statusCode).toEqual(400);
         done();
       });
 
       it("should fail if tutor is not an email ", async (done) => {
+        const { statusCode, body } = await request(app)
+          .get("/api/commonstudents?tutor=yow@.com")
+          .send();
+        const { message, details } = body;
+        expect(message).toEqual("Validation Failed");
+        expect(details).toEqual([{ tutor: '"tutor" must be a valid email' }]);
+        expect(statusCode).toEqual(400);
         done();
       });
     });
 
     describe("Valid query", () => {
       it("should pass for single common tutor ", async (done) => {
+        const { statusCode, body } = await request(app)
+          .get(`/api/commonstudents?tutor=${tutorA}`)
+          .send();
+        const { students } = body;
+
+        expect(students).toEqual([studentA, studentB, studentC]);
+        expect(statusCode).toEqual(200);
         done();
       });
 
       it("should pass for multiple common tutor", async (done) => {
+        const { statusCode, body } = await request(app)
+          .get(`/api/commonstudents?tutor=${tutorA}&tutor=${tutorB}`)
+          .send();
+        const { students } = body;
+
+        expect(students).toEqual([studentA, studentB]);
+        expect(statusCode).toEqual(200);
         done();
       });
     });

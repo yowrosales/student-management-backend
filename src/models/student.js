@@ -11,7 +11,6 @@ module.exports = (sequelize, DataTypes) => {
       this.belongsToMany(models.Tutor, {
         through: "TutorsStudents",
         foreignKey: { name: "studentId", unique: false },
-
         as: "tutor",
       });
     }
