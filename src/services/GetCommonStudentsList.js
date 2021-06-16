@@ -1,5 +1,4 @@
 const Tutor = require("../models").Tutor;
-const Student = require("../models").Student;
 class GetCommonStudentsList {
   constructor(request) {
     this.tutorData = {
