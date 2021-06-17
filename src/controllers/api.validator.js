@@ -20,3 +20,10 @@ export const suspend = {
     student: Joi.string().email().required(),
   }),
 };
+
+export const retrievenotifications = {
+  body: Joi.object({
+    tutor: Joi.string().email().required(),
+    notification: Joi.string().required(),
+  }),
+};

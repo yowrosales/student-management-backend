@@ -28,4 +28,11 @@ router.post(
   apiController.suspendStudent
 );
 
+// api/retrievenotifications
+router.post(
+  "/retrievenotifications",
+  validate(apiValidator.retrievenotifications, { keyByField: true }),
+  apiController.retrieveNotifications
+);
+
 module.exports = router;
