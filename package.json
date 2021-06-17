@@ -11,7 +11,7 @@
     "pretest": "cross-env NODE_ENV=test npm run db:reset:test",
     "db:create:test": "cross-env NODE_ENV=test npx sequelize-cli db:create",
     "db:reset:test": "cross-env NODE_ENV=test npx sequelize-cli db:drop && cross-env NODE_ENV=test npx sequelize-cli db:create && cross-env NODE_ENV=test npx sequelize-cli db:migrate",
-    "start": "npm run-script dev"
+    "start": "node src/server.js"
   },
   "jest": {
     "testEnvironment": "node",
