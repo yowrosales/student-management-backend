@@ -13,7 +13,7 @@ class SuspendStudent {
           throw {
             name: "ValidationError",
             message: "Validation Failed",
-            statusCode: 400,
+            statusCode: 404,
             error: "Bad Request",
             details: [{ student: '"student" does not exist' }],
           };

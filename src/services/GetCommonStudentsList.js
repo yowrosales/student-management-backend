@@ -14,7 +14,7 @@ class GetCommonStudentsList {
         throw {
           name: "ValidationError",
           message: "Validation Failed",
-          statusCode: 400,
+          statusCode: 404,
           error: "Bad Request",
           details: [{ tutor: '"tutor" does not exist' }],
         };

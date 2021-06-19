@@ -177,7 +177,7 @@ describe("Api Controller", () => {
         const { message, details } = body;
         expect(message).toEqual("Validation Failed");
         expect(details).toEqual([{ tutor: '"tutor" does not exist' }]);
-        expect(statusCode).toEqual(400);
+        expect(statusCode).toEqual(404);
         done();
       });
     });
@@ -227,7 +227,7 @@ describe("Api Controller", () => {
         const { message, details } = body;
         expect(message).toEqual("Validation Failed");
         expect(details).toEqual([{ student: '"student" does not exist' }]);
-        expect(statusCode).toEqual(400);
+        expect(statusCode).toEqual(404);
         done();
       });
     });
@@ -308,7 +308,7 @@ describe("Api Controller", () => {
       const { message, details } = body;
       expect(message).toEqual("Validation Failed");
       expect(details).toEqual([{ tutor: '"tutor" does not exist' }]);
-      expect(statusCode).toEqual(400);
+      expect(statusCode).toEqual(404);
       done();
     });
 
