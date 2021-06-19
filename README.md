@@ -34,10 +34,13 @@ Update environment variables:
 
 create `.env` file using `.env.sample` as format and supply MySql and other details
  
+Install dependencies:
+
+`npm install`
 
 Run create database and migration:
 
-npm run-script db:create
+`npm run-script db:create`
 
 
 Create tables:
