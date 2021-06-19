@@ -169,6 +169,17 @@ describe("Api Controller", () => {
         expect(statusCode).toEqual(400);
         done();
       });
+
+      it("should fail if tutor does not exist ", async (done) => {
+        const { statusCode, body } = await request(app)
+          .get("/api/commonstudents?tutor=yow@doesnotexist.com")
+          .send();
+        const { message, details } = body;
+        expect(message).toEqual("Validation Failed");
+        expect(details).toEqual([{ tutor: '"tutor" does not exist' }]);
+        expect(statusCode).toEqual(400);
+        done();
+      });
     });
 
     describe("Valid query", () => {

@@ -25,7 +25,15 @@ export const commonstudentslist = async (req, res) => {
 
     return successResponse(req, res, { students: filterEdList }, 200);
   } catch (error) {
-    return errorResponse(req, res, error.message);
+    return errorResponse(
+      req,
+      res,
+      error.name,
+      error.message,
+      error.statusCode,
+      error.error,
+      error.details
+    );
   }
 };
 
